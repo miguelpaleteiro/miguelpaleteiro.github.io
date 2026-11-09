@@ -203,7 +203,8 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
 .motion .wi { display: inline-block; will-change: transform; }
 
 .stage { position: relative; width: var(--vw, 100vw); margin-left: calc(50% - var(--vw, 100vw) / 2); }
-.stage-in { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--wall); }
+/* 100vh es la pantalla entera con la barra del movil oculta, para que nada se corte al esconderse */
+.stage-in { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--wall); }
 
 /* Lamina */
 .lam-oak { position: absolute; border: 10px solid var(--oak); background: var(--plate); box-shadow: 0 10px 28px rgb(20 24 34 / .18); }
@@ -223,8 +224,9 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
 
 /* Asterisco */
 .stage-in.as-in { background: transparent; pointer-events: none; }
-.stage:has(> .as-in) { z-index: 2; }
-.motion section#analitica { position: relative; z-index: 1; margin-top: -100vh; margin-top: -100svh; padding-top: 48px; border-top: 0; }
+.stage:has(> .as-in) { z-index: 2; pointer-events: none; }
+.motion .closing > .stage { pointer-events: none; }
+.motion section#analitica { position: relative; z-index: 1; margin-top: -100vh; padding-top: 48px; border-top: 0; }
 .as-big { position: absolute; left: 50%; top: 50%; width: 100px; height: 100px; margin: -50px 0 0 -50px; color: var(--red); will-change: transform; z-index: 2; pointer-events: none; }
 .aster { display: inline-block; width: .5em; height: .5em; margin-left: .08em; vertical-align: .55em; visibility: hidden; color: var(--red); }
 .aster svg { display: block; }
@@ -685,7 +687,7 @@ render();
       var tw = m.tag.offsetWidth, th = m.tag.offsetHeight, tx, ty;
       if (narrow) {
         tx = m.side === 'tr' ? W - tw - 12 : 12;
-        ty = m.side === 'bl' ? H - th - 36 : H * (m.side === 'tl' ? .1 : .19);
+        ty = m.side === 'bl' ? H * .86 - th : H * (m.side === 'tl' ? .1 : .19);
       } else {
         tx = m.side === 'tr' ? Math.min(W - tw - 8, left + w + 24) : Math.max(8, left - tw - 24);
         ty = H * (m.side === 'bl' ? .68 : .24);

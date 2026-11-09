@@ -177,7 +177,8 @@ footer p { max-width: 52em; }
   .btn, .stamp { transition: none; animation: none; }
 }
 /* Escenas ligadas al scroll, pensadas primero para movil. Solo existen con la clase .motion. */
-html.motion { overflow-x: hidden; }
+html.motion { overflow-x: hidden; overflow-anchor: none; }
+.motion body, .motion main, .motion section, .motion .stage { overflow-anchor: none; }
 .motion body { overflow-x: clip; max-width: 100%; }
 .motion .wrap { overflow-x: visible; }
 .motion main > section:not(.closing) { overflow-x: clip; overflow-y: visible; }
@@ -208,9 +209,9 @@ html.motion { overflow-x: hidden; }
 .fa-wipe span { font-size: 1.125rem; font-weight: 600; }
 
 /* Asterisco */
-.as-in { display: grid; align-content: end; padding-inline: max(16px, env(safe-area-inset-left, 0px)); padding-bottom: 28px; }
+.as-in { display: grid; align-content: start; padding-inline: max(16px, env(safe-area-inset-left, 0px)); padding-top: 48px; }
 .as-in .head { margin: 0 auto; width: 100%; max-width: 1120px; }
-.motion section#analitica { padding-top: 0; border-top: 0; }
+.motion section#analitica { position: relative; z-index: 1; padding-top: 0; border-top: 0; }
 .as-big { position: absolute; left: 50%; top: 50%; width: 100px; height: 100px; margin: -50px 0 0 -50px; color: var(--red); will-change: transform; z-index: 2; pointer-events: none; }
 .aster { display: inline-block; width: .5em; height: .5em; margin-left: .08em; vertical-align: .55em; visibility: hidden; }
 
@@ -731,8 +732,11 @@ render();
   target.setAttribute('aria-hidden', 'true');
   asTitle.appendChild(target);
   var A = {};
+  var asSection = q('#analitica'), asPull = null;
   as.onMeasure = function () {
     var W = as.inner.clientWidth, H = as.inner.clientHeight;
+    var pull = Math.max(0, H - (asHead.offsetTop + asHead.offsetHeight) - 28);
+    if (pull !== asPull) { asPull = pull; asSection.style.marginTop = -pull + 'px'; }
     var r = target.getBoundingClientRect(), b = as.inner.getBoundingClientRect();
     var prev = asHead.style.transform; asHead.style.transform = '';
     r = target.getBoundingClientRect(); asHead.style.transform = prev;
@@ -817,12 +821,12 @@ render();
   /* Medir y dibujar */
   function measure() {
     root.style.setProperty('--vw', root.clientWidth + 'px');
+    stages.forEach(function (s) { if (s.onMeasure) s.onMeasure(); });
     var vh = innerHeight, maxY = root.scrollHeight - vh;
     stages.forEach(function (s) {
       s.top = docTop(s.box);
       s.len = Math.max(1, s.box.offsetHeight - s.inner.clientHeight);
       s.h = s.inner.clientHeight;
-      if (s.onMeasure) s.onMeasure();
       s.last = -1;
     });
     tracks.forEach(function (t) {

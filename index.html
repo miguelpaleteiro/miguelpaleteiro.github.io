@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Entrenador y estudiante de Medicina. Qué pasa en tu cuerpo cuando levantas peso, corres o duermes mal, sin humo y con los datos en la mano.">
+<meta property="og:title" content="Miguel Paleteiro">
+<meta property="og:description" content="Entrenador y estudiante de Medicina. Qué pasa en tu cuerpo cuando levantas peso, corres o duermes mal, sin humo y con los datos en la mano.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Miguel Paleteiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: la pared de su set. Fotos y juego colgados como láminas en marco de roble; titulares como las portadas de sus Reels. */
+:root {
+  --wall: #E2E5EB;
+  --plate: #F8F7F2;
+  --ink: #1D212B;
+  --muted: #565E6E;
+  --line: #C3C8D2;
+  --red: #CF2E1C;
+  --red-ink: #FFFFFF;
+  --oak: #B58C52;
+  --display: "Anton", "Oswald", Impact, "Arial Narrow", sans-serif;
+  --body: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wall: #252933; --plate: #30343F; --ink: #F0F1F4; --muted: #AEB4C2;
+    --line: #474D5B; --red: #F2553F; --red-ink: #1D212B; --oak: #C9A26B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --wall: #252933; --plate: #30343F; --ink: #F0F1F4; --muted: #AEB4C2;
+  --line: #474D5B; --red: #F2553F; --red-ink: #1D212B; --oak: #C9A26B;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--wall); color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1120px; margin-inline: auto; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+h1, h2, h3 { margin: 0; font-weight: 400; text-wrap: balance; }
+p { margin: 0; }
+.label { font: 500 .75rem/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h2 { font: 400 clamp(2.25rem, 6vw, 3.75rem)/1.18 var(--display); text-transform: uppercase; letter-spacing: .01em; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px;
+  padding: 10px 22px; border: 2px solid var(--ink); border-radius: 2px; background: transparent; color: var(--ink);
+  font: 600 1rem/1.2 var(--body); text-decoration: none; cursor: pointer;
+  transition: transform .12s ease, background-color .12s ease, color .12s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.solid { background: var(--red); border-color: var(--red); color: var(--red-ink); }
+
+header.top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 20px; }
+header.top a.handle { font: 500 .9375rem var(--mono); text-decoration: none; }
+header.top nav { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: .9375rem; }
+header.top nav a { text-decoration: none; white-space: nowrap; }
+header.top nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; padding-block: clamp(20px, 4vw, 48px) clamp(48px, 7vw, 88px); }
+.hero h1 { font: 400 clamp(3.5rem, 10.5vw, 8rem)/1.2 var(--display); text-transform: uppercase; }
+.hero h1 em { font-style: normal; color: var(--red); display: block; }
+.hero .lede { max-width: 34em; margin-top: 24px; font-size: 1.1875rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.hero .text { min-width: 0; }
+
+.frame { border: 10px solid var(--oak); background: var(--plate); padding: 10px; box-shadow: 0 10px 28px rgb(20 24 34 / .18); }
+.fig { position: relative; }
+.fig img { display: block; width: 100%; height: auto; aspect-ratio: 900 / 958; object-fit: cover; }
+.dot {
+  position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%;
+  display: grid; place-items: center; background: #CF2E1C; color: #FFFFFF;
+  font: 500 .8125rem var(--mono); box-shadow: 0 0 0 2px #FFFFFF;
+}
+.legend { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; font-size: .875rem; line-height: 1.4; }
+.legend li { display: grid; grid-template-columns: 1.5em minmax(0, 1fr); }
+.legend b { font: 500 .8125rem/1.6 var(--mono); color: var(--red); }
+
+section { padding-block: clamp(48px, 7vw, 88px); border-top: 1px solid var(--line); }
+.head { display: grid; gap: 12px; margin-bottom: 32px; max-width: 42em; }
+
+.game { max-width: 780px; }
+.game .inner { position: relative; padding: clamp(20px, 4vw, 40px); overflow: hidden; }
+.meta { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.claim { font: 400 clamp(1.875rem, 5.5vw, 3.25rem)/1.22 var(--display); text-transform: uppercase; margin-block: 20px 24px; padding-right: 8px; min-height: 2.2em; }
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.choices .btn { width: 100%; font: 400 1.375rem/1 var(--display); letter-spacing: .04em; }
+.answer { margin-top: 20px; display: grid; gap: 10px; }
+.verdict { font-weight: 700; }
+.src { font: 400 .8125rem/1.5 var(--mono); color: var(--muted); }
+.stamp {
+  width: fit-content; margin-left: 6px; padding: 4px 14px; border: 4px solid var(--red); color: var(--red);
+  font: 400 clamp(1.75rem, 5vw, 2.75rem)/1.1 var(--display); letter-spacing: .05em;
+  transform: rotate(-5deg);
+  animation: stamp .22s cubic-bezier(.2, 1.5, .4, 1);
+}
+.stamp.ok { border-color: var(--ink); color: var(--ink); }
+@keyframes stamp { from { transform: rotate(-5deg) scale(2); opacity: 0; } to { transform: rotate(-5deg) scale(1); opacity: 1; } }
+
+.lab { background: var(--plate); border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); }
+.lab-row, .lab summary { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.5fr) minmax(0, 1.5fr) 20px; gap: 20px; align-items: start; padding: 14px clamp(14px, 2.5vw, 24px); }
+.lab-row { border-bottom: 2px solid var(--ink); }
+.lab details + details { border-top: 1px solid var(--line); }
+.lab summary { cursor: pointer; list-style: none; transition: background-color .12s ease; }
+.lab summary::-webkit-details-marker { display: none; }
+.lab summary:hover { background: var(--wall); }
+.lab .val { font: 500 1.0625rem/1.5 var(--mono); }
+.lab .val i { font-style: normal; color: var(--red); }
+.lab .k { display: none; }
+.lab .more { font: 500 1.25rem/1.2 var(--mono); color: var(--muted); text-align: right; }
+.lab details[open] .more { transform: rotate(45deg); }
+.lab .body { display: grid; gap: 10px; max-width: 46em; padding: 0 clamp(14px, 2.5vw, 24px) 20px; }
+.hint { margin-top: 12px; }
+.alert { display: grid; gap: 6px; margin-top: 24px; padding: 18px clamp(14px, 2.5vw, 24px); border: 3px solid var(--red); }
+.alert strong { font: 400 1.5rem/1.25 var(--display); text-transform: uppercase; letter-spacing: .02em; color: var(--red); }
+.prep { margin-top: 48px; }
+.prep h3 { font: 400 clamp(1.75rem, 4vw, 2.25rem)/1.2 var(--display); text-transform: uppercase; padding-bottom: 12px; border-bottom: 3px solid var(--ink); }
+.prep ol { list-style: none; margin: 0; padding: 0; }
+.prep li { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); gap: 20px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+.prep li .label { padding-top: 4px; }
+.lab-foot { display: grid; gap: 14px; margin-top: 28px; max-width: 46em; }
+.sources summary { cursor: pointer; font-weight: 600; }
+.sources ol { margin: 12px 0 0; padding-left: 1.4em; display: grid; gap: 8px; font-size: .875rem; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
+.fine { font-size: .875rem; color: var(--muted); }
+
+.rank { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 5vw, 56px); }
+.rank > div { min-width: 0; }
+.rank h3 { font: 400 1.75rem/1.1 var(--display); text-transform: uppercase; padding-bottom: 12px; border-bottom: 3px solid var(--ink); }
+.rank ol { list-style: none; margin: 0; padding: 0; }
+.rank li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-block: 14px; border-bottom: 1px solid var(--line); }
+.rank li span:last-child { font: 500 1rem var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; }
+.note { margin-top: 20px; }
+
+.about { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
+.about .copy { display: grid; gap: 16px; max-width: 36em; min-width: 0; }
+.soon { display: grid; gap: 12px; padding: clamp(20px, 3vw, 28px); min-width: 0; }
+.soon h3 { font: 400 clamp(1.75rem, 4vw, 2.25rem)/1.2 var(--display); text-transform: uppercase; }
+.soon .label { color: var(--red); }
+
+.closing { text-align: left; }
+.closing h2 { font-size: clamp(2.75rem, 9vw, 6.5rem); max-width: 12em; }
+.closing p { margin-top: 18px; max-width: 34em; }
+footer { padding-block: 24px 40px; border-top: 1px solid var(--line); font-size: .875rem; color: var(--muted); }
+footer p { max-width: 52em; }
+
+@media (max-width: 760px) {
+  .hero, .about, .rank { grid-template-columns: minmax(0, 1fr); }
+  .frame { border-width: 8px; padding: 8px; }
+  .lab-row { display: none; }
+  .lab summary { grid-template-columns: minmax(0, 1fr) 20px; gap: 8px 12px; }
+  .lab summary .val { grid-column: 1; grid-row: 1; }
+  .lab summary .more { grid-column: 2; grid-row: 1; }
+  .lab summary .cell { grid-column: 1 / -1; }
+  .lab .k { display: block; margin-bottom: 2px; }
+  .prep li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .stamp { transition: none; animation: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="handle" href="https://www.instagram.com/miguelpaleteiro/">@miguelpaleteiro</a>
+    <nav aria-label="Secciones">
+      <a href="#juego">Mito o verdad</a>
+      <a href="#analitica">Tu analítica</a>
+      <a href="#temas">Temas</a>
+      <a href="#sobre-mi">Sobre mí</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="text">
+        <h1>Entiende <em>por qué</em> entrenas así</h1>
+        <p class="lede">Soy Miguel, entrenador y estudiante de Medicina. Explico qué pasa en tu cuerpo cuando levantas peso, corres o duermes mal, sin humo y con los datos en la mano.</p>
+        <div class="actions">
+          <a class="btn solid" href="https://www.instagram.com/miguelpaleteiro/">Seguir en Instagram</a>
+          <a class="btn" href="#juego">Jugar a mito o verdad</a>
+        </div>
+      </div>
+      <figure class="frame" style="margin:0">
+        <div class="fig">
+          <img src="miguel.jpg" width="900" height="958" alt="Miguel hablando a cámara delante de dos láminas anatómicas enmarcadas, una de un corazón y otra de una mano.">
+          <span class="dot" style="left:27%;top:36%" aria-hidden="true">1</span>
+          <span class="dot" style="left:30%;top:84%" aria-hidden="true">2</span>
+          <span class="dot" style="left:84%;top:32%" aria-hidden="true">3</span>
+        </div>
+        <ol class="legend">
+          <li><b>1</b><span>Lámina del corazón. Estudio 4º de Medicina.</span></li>
+          <li><b>2</b><span>Ropa de entrenar. Soy entrenador TSAF y entreno a gente.</span></li>
+          <li><b>3</b><span>Lámina de la mano. Si cuento un dato, cuento de dónde sale.</span></li>
+        </ol>
+      </figure>
+    </div>
+
+    <section id="juego" aria-labelledby="juego-t">
+      <div class="head">
+        <p class="label">Seis frases de gimnasio</p>
+        <h2 id="juego-t">¿Mito o verdad?</h2>
+        <p>Las he oído todas entrenando. Elige y mira qué dice la evidencia.</p>
+      </div>
+      <div class="game frame">
+        <div class="inner" id="game">
+          <div class="meta label"><span id="progress"></span><span id="score"></span></div>
+          <p class="claim" id="claim" aria-live="polite"></p>
+          <div class="choices" id="choices">
+            <button class="btn" id="btn-mito" type="button">Mito</button>
+            <button class="btn" id="btn-verdad" type="button">Verdad</button>
+          </div>
+          <div class="stamp" id="stamp" hidden></div>
+          <div class="answer" id="answer" hidden>
+            <p id="why" aria-live="polite"></p>
+            <p class="src" id="src"></p>
+            <div class="actions" style="margin-top:6px">
+              <button class="btn solid" id="next" type="button">Siguiente</button>
+              <a class="btn" id="ig-end" href="https://www.instagram.com/miguelpaleteiro/" hidden>Propón el próximo mito</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analitica" aria-labelledby="analitica-t">
+      <div class="head">
+        <p class="label">Guía de la serie «¿Es bueno… si entrenas?»</p>
+        <h2 id="analitica-t">Tu analítica si entrenas</h2>
+        <p>Por qué a veces sale algo con asterisco (*), y cuándo sí hay que hacerle caso. Entrenar cambia la sangre y la orina, y el laboratorio no sabe que hace dos días hiciste pierna. Si no lo cuentas tú, nadie lo tiene en cuenta.</p>
+      </div>
+
+      <div class="lab">
+        <div class="lab-row label" aria-hidden="true"><span>Valor</span><span>Por qué puede salir alterado si entrenas</span><span>Cuándo consultar</span><span></span></div>
+
+        <details open>
+          <summary>
+            <span class="val">CK <i>*</i></span>
+            <span class="cell"><span class="k label">Si entrenas</span>Sube mucho tras entrenos duros o ejercicios nuevos.</span>
+            <span class="cell"><span class="k label">Consulta</span>Orina oscura, dolor desproporcionado o debilidad: urgencias.</span>
+            <span class="more" aria-hidden="true">+</span>
+          </summary>
+          <div class="body">
+            <p>La creatina quinasa es una enzima que está sobre todo en el músculo. Cuando entrenas fuerte, sobre todo con un ejercicio nuevo o con mucha bajada controlada, se dañan pequeñas fibras musculares y pasa a la sangre.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <span class="val">GOT / GPT <i>*</i></span>
+            <span class="cell"><span class="k label">Si entrenas</span>Pueden seguir altas una semana o más tras entrenar con pesas.</span>
+            <span class="cell"><span class="k label">Consulta</span>Siguen altas en reposo o también sube la GGT.</span>
+            <span class="more" aria-hidden="true">+</span>
+          </summary>
+          <div class="body">
+            <p>También se llaman AST y ALT. Tienen fama de ser «del hígado», pero el músculo también tiene. En un estudio sueco, quince hombres sanos que no solían hacer pesas entrenaron una hora con pesas: estas enzimas subieron y seguían altas una semana después.</p>
+            <p>Hay una pista útil. En ese estudio la GGT, mucho más del hígado que del músculo, se quedó normal. Unas transaminasas altas con la CK alta y la GGT normal suelen apuntar al músculo. Es algo para comentar con tu médico, no un diagnóstico.</p>
+            <p>Conviene repetir la analítica si siguen altas tras una o dos semanas sin entrenar duro, si sube la GGT o si salen altas sin haber entrenado.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <span class="val">LDH <i>*</i></span>
+            <span class="cell"><span class="k label">Si entrenas</span>Sube con el daño muscular.</span>
+            <span class="cell"><span class="k label">Consulta</span>Sigue alta en reposo.</span>
+            <span class="more" aria-hidden="true">+</span>
+          </summary>
+          <div class="body">
+            <p>Está repartida por casi todo el cuerpo. En el estudio de las pesas subió junto a la CK y las transaminasas.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <span class="val">Creatinina <i>*</i></span>
+            <span class="cell"><span class="k label">Si entrenas</span>Sube con más músculo o si tomas creatina.</span>
+            <span class="cell"><span class="k label">Consulta</span>Va subiendo o hay proteínas en la orina.</span>
+            <span class="more" aria-hidden="true">+</span>
+          </summary>
+          <div class="body">
+            <p>Es un desecho del músculo que elimina el riñón, y por eso se usa para calcular el filtrado glomerular del informe. El filtrado puede salir algo más bajo aunque el riñón esté perfectamente. En gente sana que toma dosis normales de creatina no se ha visto daño renal.</p>
+            <p>Dile a tu médico si tomas creatina y no entrenes fuerte el día antes. Si aun así hay dudas, existe la cistatina C, un marcador que depende mucho menos del músculo. Míralo con calma también si tienes tensión alta, diabetes o algún problema de riñón ya conocido.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <span class="val">Hemoglobina <i>*</i></span>
+            <span class="cell"><span class="k label">Si entrenas</span>Baja un poco por la dilución del plasma.</span>
+            <span class="cell"><span class="k label">Consulta</span>Con ferritina o VCM bajos, o cansancio sin explicación.</span>
+            <span class="more" aria-hidden="true">+</span>
+          </summary>
+          <div class="body">
+            <p>Si corres, nadas o vas en bici a menudo, el cuerpo aumenta el volumen de plasma. Los glóbulos rojos siguen ahí, repartidos en más líquido, así que la concentración baja. Se llama pseudoanemia dilucional, es una adaptación normal y desaparece en unos 35 días si dejas de entrenar.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <span class="val">Ferritina <i>*</i></span>
+            <span class="cell"><span class="k label">Si entrenas</span>Puede ir bajando si entrenas mucho.</span>
+            <span class="cell"><span class="k label">Consulta</span>Cansancio y peor recuperación.</span>
+            <span class="more" aria-hidden="true">+</span>
+          </summary>
+          <div class="body">
+            <p>Refleja tus reservas de hierro, y puede estar baja sin que lo notes. El ejercicio intenso sube durante unas horas la hepcidina, que frena la absorción de hierro. Si le sumas lo que se pierde con el sudor o la menstruación y comer menos de lo que gastas, las reservas pueden ir bajando. Entre deportistas, el déficit de hierro aparece en torno al 15–35 % de las mujeres y al 5–11 % de los hombres.</p>
+            <p>Un detalle que despista: la ferritina sube con la inflamación, así que tras una semana muy dura o con un catarro puede salir normal aunque las reservas estén bajas. Y no tomes hierro por tu cuenta «por si acaso», porque el exceso también da problemas.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            <span class="val">Orina <i>*</i></span>
+            <span class="cell"><span class="k label">Si entrenas</span>Proteínas o sangre tras un esfuerzo intenso.</span>
+            <span class="cell"><span class="k label">Consulta</span>Se repite en reposo o la sangre se ve a simple vista.</span>
+            <span class="more" aria-hidden="true">+</span>
+          </summary>
+          <div class="body">
+            <p>Durante el ejercicio el riñón filtra de otra manera y deja pasar más cosas, normalmente de forma invisible a simple vista. Suele desaparecer en poco tiempo. Si sale algo, lo normal es repetirlo tras unos días de descanso.</p>
+          </div>
+        </details>
+      </div>
+      <p class="hint label">Toca un valor para leer la explicación</p>
+
+      <div class="alert" role="note">
+        <strong>Cuándo ir a urgencias</strong>
+        <p>Si después de un entreno muy bestia la orina te sale oscura, como refresco de cola, y te duele el músculo muchísimo más de lo normal o estás muy débil. Puede ser una rabdomiólisis.</p>
+      </div>
+
+      <div class="prep">
+        <h3>Lo que yo haría antes de una analítica</h3>
+        <ol>
+          <li><span class="label">Una semana antes</span><span>Sin entrenos de fuerza muy intensos ni ejercicios nuevos. Si no puedes, al menos no entrenes duro los días justo antes.</span></li>
+          <li><span class="label">El día anterior</span><span>Nada intenso, sobre todo si también te analizan la orina.</span></li>
+          <li><span class="label">Ese día</span><span>Ve bien hidratado.</span></li>
+          <li><span class="label">En la consulta</span><span>Cuenta qué entrenas, cuándo fue tu último entreno fuerte y qué suplementos tomas.</span></li>
+          <li><span class="label">Si algo sale alterado</span><span>No te automediques. Muchas veces basta con repetir la prueba tras unos días de descanso, y eso lo decide tu médico.</span></li>
+        </ol>
+      </div>
+
+      <div class="lab-foot">
+        <p>¿Hay otro valor de tu analítica que no terminas de entender? <a href="https://www.instagram.com/miguelpaleteiro/">Escríbeme en Instagram</a>, que igual sale video.</p>
+        <details class="sources">
+          <summary>Fuentes</summary>
+          <ol>
+            <li>Pettersson J, Hindorf U, Persson P, et al. Muscular exercise can cause highly pathological liver function tests in healthy men. Br J Clin Pharmacol. 2008;65(2):253-259. doi:10.1111/j.1365-2125.2007.03001.x</li>
+            <li>Tackett J, Reynolds AS, Dickerman RD. Enzyme elevations with muscle injury: know what to look for! Br J Clin Pharmacol. 2008;66(5):725. doi:10.1111/j.1365-2125.2008.03244.x</li>
+            <li>Torres PA, Helmstetter JA, Kaye AM, Kaye AD. Rhabdomyolysis: pathogenesis, diagnosis, and treatment. Ochsner J. 2015;15(1):58-69.</li>
+            <li>Kreider RB, Kalman DS, Antonio J, et al. International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine. J Int Soc Sports Nutr. 2017;14:18. doi:10.1186/s12970-017-0173-z</li>
+            <li>Shaskey DJ, Green GA. Sports haematology. Sports Med. 2000;29(1):27-38.</li>
+            <li>Sim M, Garvican-Lewis LA, Cox GR, et al. Iron considerations for the athlete: a narrative review. Eur J Appl Physiol. 2019;119(7):1463-1478. doi:10.1007/s00421-019-04157-y</li>
+            <li>Bellinghieri G, Savica V, Santoro D. Renal alterations during exercise. J Ren Nutr. 2008;18(1):158-164.</li>
+          </ol>
+        </details>
+        <p class="fine">Esta guía es divulgativa. No sustituye la valoración de un profesional sanitario ni sirve para diagnosticar ni tratar ninguna enfermedad. Ante cualquier resultado alterado o síntoma, consulta con tu médico.</p>
+      </div>
+    </section>
+
+    <section id="temas" aria-labelledby="temas-t">
+      <div class="head">
+        <p class="label">Datos de Instagram a 8 de noviembre de 2026</p>
+        <h2 id="temas-t">Lo que más os ha servido</h2>
+        <p>Los Reels que la gente ha guardado para usarlos y los que ha mandado a alguien.</p>
+      </div>
+      <div class="rank">
+        <div>
+          <h3>Más guardados</h3>
+          <ol>
+            <li><span>Tendinitis</span><span>51</span></li>
+            <li><span>Dormir menos de 5 horas</span><span>26</span></li>
+            <li><span>Empezar a correr</span><span>24</span></li>
+          </ol>
+        </div>
+        <div>
+          <h3>Más compartidos</h3>
+          <ol>
+            <li><span>Transaminasas</span><span>26</span></li>
+            <li><span>Ibuprofeno</span><span>23</span></li>
+            <li><span>Entrenar y cerebro</span><span>19</span></li>
+          </ol>
+        </div>
+      </div>
+      <p class="note"><a href="https://www.instagram.com/miguelpaleteiro/">Verlos todos en mi perfil</a></p>
+    </section>
+
+    <section id="sobre-mi" aria-labelledby="sobre-t">
+      <div class="about">
+        <div class="copy">
+          <p class="label">Sobre mí</p>
+          <h2 id="sobre-t">Del gimnasio a la facultad, y vuelta</h2>
+          <p>Soy entrenador TSAF y estudio 4º de Medicina. En clase me explican cómo funciona el cuerpo y en el gimnasio veo cómo se comporta de verdad. Mis videos juntan las dos cosas.</p>
+          <p>Hago esto para quien ya entrena fuerza o corre y quiere saber el porqué de lo que hace. Grabo en casa, con mis láminas y mi pizarra, y casi siempre termino con una pregunta, porque lo que me contáis en comentarios me da los siguientes temas.</p>
+        </div>
+        <aside class="soon frame" aria-labelledby="soon-t">
+          <p class="label">Próximamente</p>
+          <h3 id="soon-t">Asesorías de entrenamiento y hábitos de vida</h3>
+          <p>Todavía no están abiertas. Ahora mismo quiero crear una buena comunidad. Cuando llegue el momento, lo contaré primero en Instagram.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="cierre-t">
+      <h2 id="cierre-t">¿Qué te gustaría entender de tu cuerpo?</h2>
+      <p>Cuéntamelo en los comentarios de cualquier Reel. Las mejores preguntas acaban siendo el siguiente video.</p>
+      <div class="actions"><a class="btn solid" href="https://www.instagram.com/miguelpaleteiro/">Ir a @miguelpaleteiro</a></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Contenido de divulgación. Soy entrenador y estudiante de Medicina, no médico, y no doy diagnósticos individuales. Si algo te duele o te preocupa, consulta con un profesional sanitario.</p>
+  </footer>
+</div>
+
+<script>
+const ITEMS = [
+  { c: "Las agujetas son ácido láctico", a: "mito",
+    w: "El lactato vuelve a niveles normales en unos 30 a 60 minutos. Las agujetas aparecen entre 24 y 72 horas después, así que las fechas no cuadran. Se asocian a microdaño muscular e inflamación, sobre todo al bajar el peso.",
+    s: "Schwane et al., 1983, Medicine & Science in Sports & Exercise" },
+  { c: "El cruzado se rompe en unos 40 milisegundos", a: "verdad",
+    w: "Al analizar en video roturas reales, la rodilla se va hacia dentro y gira en los primeros 40 ms tras apoyar. Es más rápido que un parpadeo, y por eso frenar y aterrizar con la rodilla alineada se entrena antes.",
+    s: "Koga et al., 2010, American Journal of Sports Medicine" },
+  { c: "Hacer abdominales quema la grasa de la barriga", a: "mito",
+    w: "En un ensayo, seis semanas de abdominales no redujeron la grasa de la zona. Fortalecen el abdomen, pero no eliges de dónde pierdes grasa.",
+    s: "Vispute et al., 2011, Journal of Strength and Conditioning Research" },
+  { c: "Las primeras semanas de fuerza mejoras sobre todo por el sistema nervioso", a: "verdad",
+    w: "Al principio tu cuerpo aprende a reclutar mejor las fibras que ya tienes. La ganancia de músculo pesa más a medida que pasan las semanas.",
+    s: "Moritani y deVries, 1979, American Journal of Physical Medicine" },
+  { c: "Estirar antes de entrenar previene lesiones", a: "mito",
+    w: "Un metaanálisis no encontró que estirar protegiera de lesiones. El entrenamiento de fuerza sí las redujo de forma clara. Si estirar te sienta bien, puedes seguir haciéndolo, pero no cuentes con ello como prevención.",
+    s: "Lauersen et al., 2014, British Journal of Sports Medicine" },
+  { c: "Si repites el mismo entreno a la semana, tendrás menos agujetas", a: "verdad",
+    w: "Se llama efecto de la serie repetida: el músculo se adapta tras la primera sesión y la siguiente duele bastante menos. Tampoco tener más agujetas significa haber entrenado mejor.",
+    s: "McHugh, 2003, Scandinavian Journal of Medicine & Science in Sports" }
+];
+const $ = id => document.getElementById(id);
+let i = 0, hits = 0, done = false;
+const scoreText = () => hits + (hits === 1 ? " acierto" : " aciertos");
+
+function render() {
+  const it = ITEMS[i];
+  done = false;
+  $("progress").textContent = (i + 1) + " de " + ITEMS.length;
+  $("score").textContent = scoreText();
+  $("claim").textContent = it.c;
+  $("choices").hidden = false;
+  $("answer").hidden = true;
+  $("stamp").hidden = true;
+  $("ig-end").hidden = true;
+  $("next").textContent = i === ITEMS.length - 1 ? "Ver resultado" : "Siguiente";
+}
+function answer(choice) {
+  if (done) return;
+  done = true;
+  const it = ITEMS[i], right = choice === it.a;
+  if (right) hits++;
+  $("score").textContent = scoreText();
+  $("choices").hidden = true;
+  $("answer").hidden = false;
+  $("why").textContent = (right ? "Has acertado. " : "Esta se te ha escapado. ") + it.w;
+  $("src").textContent = "Fuente: " + it.s;
+  const st = $("stamp");
+  st.textContent = it.a === "mito" ? "FALSO" : "VERDAD";
+  st.className = it.a === "mito" ? "stamp" : "stamp ok";
+  st.hidden = false;
+  $("next").focus({ preventScroll: true });
+}
+function finish() {
+  $("progress").textContent = "Resultado";
+  $("score").textContent = "";
+  $("claim").textContent = hits + " de " + ITEMS.length + (hits === ITEMS.length ? ". No se te escapa ni una" : hits >= 4 ? ". Vas muy bien" : ". Ya tienes seis mitos menos");
+  $("stamp").hidden = true;
+  $("choices").hidden = true;
+  $("answer").hidden = false;
+  $("why").textContent = "¿Qué frase has oído en el gimnasio y no te cuadra? Escríbemela en Instagram y la pongo a prueba.";
+  $("src").textContent = "";
+  $("next").textContent = "Volver a jugar";
+  $("ig-end").hidden = false;
+  i = ITEMS.length;
+}
+$("btn-mito").addEventListener("click", () => answer("mito"));
+$("btn-verdad").addEventListener("click", () => answer("verdad"));
+$("next").addEventListener("click", () => {
+  if (i >= ITEMS.length) { i = 0; hits = 0; render(); return; }
+  if (i === ITEMS.length - 1) { finish(); return; }
+  i++; render();
+});
+render();
+</script>
+</body>
+</html>

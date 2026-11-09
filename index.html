@@ -176,6 +176,58 @@ footer p { max-width: 52em; }
   html { scroll-behavior: auto; }
   .btn, .stamp { transition: none; animation: none; }
 }
+/* Escenas ligadas al scroll, pensadas primero para movil. Solo existen con la clase .motion. */
+html.motion { overflow-x: hidden; }
+.motion body { overflow-x: clip; max-width: 100%; }
+.motion .wrap { overflow-x: visible; }
+.motion main > section:not(.closing) { overflow-x: clip; overflow-y: visible; }
+.motion .hero { overflow-x: clip; overflow-y: visible; }
+.motion .hero { grid-template-columns: minmax(0, 1fr); padding-block-end: 28px; }
+.motion .hero > .frame { display: none; }
+.motion .hero h1 span.line { display: block; will-change: transform; }
+.motion .w { display: inline-block; overflow: hidden; vertical-align: bottom; padding-block: .24em .1em; margin-block: -.24em -.1em; }
+.motion .wi { display: inline-block; will-change: transform; }
+
+.stage { position: relative; width: var(--vw, 100vw); margin-left: calc(50% - var(--vw, 100vw) / 2); }
+.stage-in { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--wall); }
+
+/* Lamina */
+.lam-oak { position: absolute; border: 10px solid var(--oak); background: var(--plate); box-shadow: 0 10px 28px rgb(20 24 34 / .18); }
+.lam-img { position: absolute; max-width: none; display: block; will-change: transform, clip-path; }
+.lam-line { position: absolute; height: 2px; background: #FFFFFF; transform-origin: 0 50%; box-shadow: 0 0 4px rgb(0 0 0 / .5); }
+.lam-dot { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: #CF2E1C; box-shadow: 0 0 0 3px #FFFFFF; }
+.lam-tag { position: absolute; width: min(46vw, 260px); padding: 10px 12px; background: var(--plate); color: var(--ink); font-size: .9375rem; line-height: 1.3; font-weight: 600; box-shadow: 0 6px 18px rgb(20 24 34 / .28); }
+.lam-tag small { display: block; margin-bottom: 3px; font: 500 .6875rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--red); }
+
+/* Frase y sello */
+.fa-in { display: grid; place-items: center; padding-inline: max(20px, env(safe-area-inset-left, 0px)); }
+.fa-claim { max-width: 11em; font: 400 clamp(3.25rem, 15vw, 8.5rem)/1.16 var(--display); text-transform: uppercase; text-wrap: balance; }
+.fa-stamp { position: absolute; left: 50%; top: 74%; padding: 2px 18px; border: 7px solid var(--red); color: var(--red); background: var(--wall); font: 400 clamp(4rem, 21vw, 10rem)/1.12 var(--display); letter-spacing: .04em; white-space: nowrap; opacity: 0; }
+.fa-wipe { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 12px; padding-inline: 20px; background: var(--red); color: var(--red-ink); text-align: center; clip-path: circle(0 at 50% 74%); }
+.fa-wipe strong { font: 400 clamp(3.5rem, 17vw, 9rem)/1.12 var(--display); text-transform: uppercase; font-weight: 400; }
+.fa-wipe span { font-size: 1.125rem; font-weight: 600; }
+
+/* Asterisco */
+.as-in { display: grid; align-content: center; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+.as-in .head { margin: 0 auto; width: 100%; max-width: 1120px; }
+.as-big { position: absolute; left: 50%; top: 50%; width: 100px; height: 100px; margin: -50px 0 0 -50px; color: var(--red); will-change: transform; z-index: 2; pointer-events: none; }
+.aster { display: inline-block; width: .5em; height: .5em; margin-left: .08em; vertical-align: .55em; visibility: hidden; }
+
+/* Aviso */
+.motion .alert { position: relative; overflow: hidden; transition: color .15s ease; }
+.motion .alert > * { position: relative; z-index: 1; transition: color .15s ease; }
+.motion .alert > .alert-fill { position: absolute; z-index: 0; inset: 0; background: var(--red); transform-origin: 0 50%; transform: scaleX(0); }
+.motion .alert.lit, .motion .alert.lit strong, .motion .alert.lit p { color: var(--red-ink); }
+
+/* Cierre */
+.motion section.closing { padding: 0; border: 0; }
+.motion .closing > .stage { z-index: 3; margin-top: -70vh; margin-top: -70svh; }
+.stage-in.cl-in { background: transparent; pointer-events: none; }
+.cl-bg { position: absolute; inset: 0; display: grid; align-content: center; gap: 22px; padding-inline: max(20px, env(safe-area-inset-left, 0px)); background: var(--ink); clip-path: inset(100% 0 0 0); will-change: clip-path; }
+.cl-bg > * { color: var(--wall); }
+.motion .closing h2.big { font-size: clamp(3.5rem, 15.5vw, 8.5rem); line-height: 1.16; max-width: 11em; }
+.motion .closing .actions { margin: 0; }
+.motion .closing .btn.solid { color: var(--red-ink); }
 </style>
 </head>
 <body>
@@ -507,6 +559,307 @@ $("next").addEventListener("click", () => {
   i++; render();
 });
 render();
+</script>
+<script>
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var root = document.documentElement;
+  root.classList.add('motion');
+
+  var clamp = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var seg = function (p, a, b) { return clamp((p - a) / (b - a)); };
+  var out = function (t) { return 1 - Math.pow(1 - t, 3); };
+  var inOut = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  var mix = function (a, b, t) { return a + (b - a) * t; };
+  var q = function (s) { return document.querySelector(s); };
+  var all = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var docTop = function (el) { var y = 0; while (el) { y += el.offsetTop; el = el.offsetParent; } return y; };
+  var make = function (tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html) e.innerHTML = html; return e; };
+  var main = q('main');
+
+  function split(el, masked) {
+    var text = el.textContent.trim();
+    el.setAttribute('aria-label', text);
+    el.textContent = '';
+    return text.split(/\s+/).map(function (word, i) {
+      if (i) el.appendChild(document.createTextNode(' '));
+      var inner = make('span');
+      inner.textContent = word;
+      inner.setAttribute('aria-hidden', 'true');
+      if (masked) {
+        var o = make('span', 'w'); inner.className = 'wi'; o.appendChild(inner); el.appendChild(o);
+      } else el.appendChild(inner);
+      return inner;
+    });
+  }
+  function lightWords(words, p, dim) {
+    var n = words.length;
+    words.forEach(function (w, i) { w.style.opacity = mix(dim, 1, clamp(p * n - i)); });
+  }
+
+  var tracks = [], stages = [];
+  function track(el, from, to, fn) { tracks.push({ el: el, from: from, to: to, fn: fn, last: -1 }); }
+  function stage(before, units, cls, fn, onMeasure) {
+    var box = make('div', 'stage'), inner = make('div', 'stage-in ' + (cls || ''));
+    box.style.height = units + 'vh'; box.style.height = units + 'svh';
+    box.appendChild(inner);
+    if (before) before.parentNode.insertBefore(box, before);
+    var s = { box: box, inner: inner, fn: fn, onMeasure: onMeasure, last: -1 };
+    stages.push(s);
+    return s;
+  }
+
+  /* Portada: las lineas se separan al bajar */
+  var h1 = q('.hero h1');
+  var parts = Array.prototype.slice.call(h1.childNodes);
+  h1.textContent = '';
+  var lines = [];
+  parts.forEach(function (node) {
+    if (!node.textContent.trim()) return;
+    var l = make('span', 'line');
+    if (node.nodeType === 3) l.textContent = node.textContent.trim(); else l.appendChild(node);
+    h1.appendChild(l); lines.push(l);
+  });
+  var heroEnd = function () { return q('.hero').offsetHeight; };
+  var heroTrack = { el: q('.hero'), custom: true, last: -1, fn: function (p) {
+    lines.forEach(function (l, i) {
+      var t = inOut(p), dir = i % 2 ? 1 : -1;
+      l.style.transform = t <= 0 ? '' : 'translate3d(' + dir * t * 60 + 'vw,0,0)';
+    });
+  } };
+
+  /* Escena 1: la foto se convierte en lamina */
+  var lam = stage(q('#juego'), 330, '', null, null);
+  var oak = make('div', 'lam-oak'), img = make('img', 'lam-img');
+  img.src = 'miguel-alta.jpg'; img.width = 1080; img.height = 1920;
+  img.alt = 'Miguel delante de sus láminas anatómicas de un corazón y una mano.';
+  lam.inner.appendChild(oak); lam.inner.appendChild(img);
+  var IW = 1080, IH = 1920, F0 = .255, F1 = .853;
+  var marks = [
+    { fx: .31, fy: .465, kick: 'Lámina del corazón', txt: 'Estudio 4.º de Medicina.', a: .42, b: .52, side: 'tl' },
+    { fx: .835, fy: .45, kick: 'Lámina de la mano', txt: 'Si cuento un dato, cuento de dónde sale.', a: .54, b: .64, side: 'tr' },
+    { fx: .29, fy: .75, kick: 'Ropa de entrenar', txt: 'Entrenador personal titulado (TSAF).', a: .66, b: .76, side: 'bl' }
+  ];
+  marks.forEach(function (m) {
+    m.line = make('div', 'lam-line'); m.dot = make('div', 'lam-dot');
+    m.tag = make('div', 'lam-tag'); m.tag.appendChild(make('small', '', m.kick)); m.tag.appendChild(document.createTextNode(m.txt));
+    lam.inner.appendChild(m.line); lam.inner.appendChild(m.dot); lam.inner.appendChild(m.tag);
+  });
+  var L = {};
+  lam.onMeasure = function () {
+    var W = lam.inner.clientWidth, H = lam.inner.clientHeight;
+    var narrow = W / H < .8;
+    var s1 = narrow ? Math.max(W / IW, H / IH) : H / IH;
+    var w = IW * s1, h = IH * s1, left = (W - w) / 2, top = (H - h) / 2;
+    img.style.width = w + 'px'; img.style.height = h + 'px'; img.style.left = left + 'px'; img.style.top = top + 'px';
+    var fw = Math.min(W - 44, H * .6), k0 = fw / w, ch = (F1 - F0) * h * k0;
+    var startTop = narrow ? 22 : Math.max(22, (H - ch) / 2);
+    var cropMid = (F0 + F1) / 2 - .5;
+    L = { k0: k0, ty0: startTop + ch / 2 - H / 2 - cropMid * h * k0 };
+    oak.style.left = (W - fw) / 2 - 18 + 'px'; oak.style.top = startTop - 18 + 'px';
+    oak.style.width = fw + 36 + 'px'; oak.style.height = ch + 36 + 'px';
+    marks.forEach(function (m) {
+      var x = left + m.fx * w, y = top + m.fy * h;
+      m.dot.style.left = x + 'px'; m.dot.style.top = y + 'px';
+      var tw = m.tag.offsetWidth, th = m.tag.offsetHeight, tx, ty;
+      if (narrow) {
+        tx = m.side === 'tr' ? W - tw - 12 : 12;
+        ty = m.side === 'bl' ? H - th - 36 : H * (m.side === 'tl' ? .1 : .19);
+      } else {
+        tx = m.side === 'tr' ? Math.min(W - tw - 8, left + w + 24) : Math.max(8, left - tw - 24);
+        ty = H * (m.side === 'bl' ? .68 : .24);
+      }
+      m.tag.style.left = tx + 'px'; m.tag.style.top = ty + 'px';
+      var ax = m.side === 'tr' ? tx + tw * .4 : tx + tw * .6, ay = m.side === 'bl' ? ty : ty + th;
+      if (!narrow) { ax = m.side === 'tr' ? tx : tx + tw; ay = ty + th / 2; }
+      var dx = x - ax, dy = y - ay;
+      m.line.style.left = ax + 'px'; m.line.style.top = ay + 'px';
+      m.line.style.width = Math.sqrt(dx * dx + dy * dy) + 'px';
+      m.rot = Math.atan2(dy, dx);
+    });
+  };
+  lam.fn = function (p) {
+    var t = inOut(seg(p, 0, .36)), k = mix(L.k0, 1, t), ty = mix(L.ty0, 0, t);
+    img.style.transform = 'translate3d(0,' + ty + 'px,0) scale(' + k + ')';
+    img.style.clipPath = 'inset(' + F0 * (1 - t) * 100 + '% 0 ' + (1 - F1) * (1 - t) * 100 + '% 0)';
+    oak.style.opacity = 1 - seg(t, .02, .22);
+    marks.forEach(function (m) {
+      var e = out(seg(p, m.a, m.b));
+      m.line.style.opacity = e > 0 ? 1 : 0;
+      m.line.style.transform = 'rotate(' + m.rot + 'rad) scaleX(' + e + ')';
+      m.dot.style.transform = 'scale(' + e + ')';
+      m.tag.style.opacity = e;
+      m.tag.style.transform = 'translate3d(0,' + (1 - e) * (m.side === 'bl' ? 26 : -26) + 'px,0) scale(' + mix(.85, 1, e) + ')';
+    });
+  };
+
+  /* Escena 2: frase de gimnasio y sello */
+  var fa = stage(q('#juego'), 300, 'fa-in', null, null);
+  var claim = make('p', 'fa-claim', 'Si no sudas, no has entrenado');
+  var stamp = make('div', 'fa-stamp', 'FALSO');
+  var wipe = make('div', 'fa-wipe', '<strong>Ahora te toca</strong><span>Seis frases de gimnasio. ¿Cuántas aciertas?</span>');
+  fa.inner.appendChild(claim); fa.inner.appendChild(stamp); fa.inner.appendChild(wipe);
+  var claimWords = split(claim, false);
+  var wipeText = Array.prototype.slice.call(wipe.children);
+  fa.fn = function (p) {
+    lightWords(claimWords, seg(p, 0, .34), .1);
+    var s = seg(p, .4, .5), e = s * s, thud = seg(p, .5, .56);
+    stamp.style.opacity = s > 0 ? 1 : 0;
+    stamp.style.transform = 'translate(-50%,-50%) rotate(' + mix(-22, -8, e) + 'deg) scale(' + mix(4.5, 1, e) + ')';
+    var shake = thud > 0 && thud < 1 ? Math.sin(thud * Math.PI * 4) * (1 - thud) * 12 : 0;
+    claim.style.transform = shake ? 'translate3d(' + shake + 'px,' + (-shake / 2) + 'px,0)' : '';
+    var c = inOut(seg(p, .62, .84));
+    wipe.style.clipPath = 'circle(' + c * 130 + 'vmax at 50% 74%)';
+    var r = out(seg(p, .76, .92));
+    wipeText.forEach(function (x, i) {
+      var t = out(seg(p, .76 + i * .05, .92));
+      x.style.opacity = t; x.style.transform = 'translate3d(0,' + (1 - t) * 36 + 'px,0)';
+    });
+  };
+
+  /* Escena 3: asterisco gigante */
+  var as = stage(q('#analitica'), 220, 'as-in', null, null);
+  var asHead = q('#analitica .head');
+  as.inner.appendChild(asHead);
+  var svg = '<svg viewBox="-50 -50 100 100" aria-hidden="true" width="100%" height="100%"><g stroke="currentColor" stroke-width="20" stroke-linecap="butt"><line x1="0" y1="-50" x2="0" y2="50"/><line x1="-43.3" y1="-25" x2="43.3" y2="25"/><line x1="-43.3" y1="25" x2="43.3" y2="-25"/></g></svg>';
+  var big = make('div', 'as-big', svg);
+  as.inner.appendChild(big);
+  var asTitle = q('#analitica-t');
+  var target = make('span', 'aster');
+  target.setAttribute('aria-hidden', 'true');
+  asTitle.appendChild(target);
+  var A = {};
+  as.onMeasure = function () {
+    var W = as.inner.clientWidth, H = as.inner.clientHeight;
+    var r = target.getBoundingClientRect(), b = as.inner.getBoundingClientRect();
+    var prev = asHead.style.transform; asHead.style.transform = '';
+    r = target.getBoundingClientRect(); asHead.style.transform = prev;
+    A = { dx: r.left + r.width / 2 - b.left - W / 2, dy: r.top + r.height / 2 - b.top - H / 2, end: r.width / 100, start: Math.max(W, H) * 3 / 100 };
+  };
+  as.fn = function (p) {
+    var e = inOut(seg(p, .02, .62));
+    big.style.transform = 'translate3d(' + A.dx * e + 'px,' + A.dy * e + 'px,0) rotate(' + (1 - e) * 210 + 'deg) scale(' + mix(A.start, A.end, e) + ')';
+    var h = out(seg(p, .42, .72));
+    asHead.style.opacity = h;
+    asHead.style.transform = 'translate3d(0,' + (1 - h) * 50 + 'px,0)';
+  };
+
+  /* Escena 4: cierre */
+  var closing = q('section.closing');
+  var cl = stage(null, 220, 'cl-in', null, null);
+  closing.insertBefore(cl.box, closing.firstChild);
+  var clBg = make('div', 'cl-bg');
+  cl.inner.appendChild(clBg);
+  var clH = closing.querySelector('h2'), clP = closing.querySelector(':scope > p'), clA = closing.querySelector(':scope > .actions');
+  clH.classList.add('big');
+  clBg.appendChild(clH); clBg.appendChild(clP); clBg.appendChild(clA);
+  var clWords = split(clH, false);
+  cl.fn = function (p) {
+    clBg.style.clipPath = 'inset(' + (1 - inOut(seg(p, 0, .3))) * 100 + '% 0 0 0)';
+    lightWords(clWords, seg(p, .12, .58), .12);
+    [clP, clA].forEach(function (x, i) {
+      var t = out(seg(p, .6 + i * .05, .76));
+      x.style.opacity = t; x.style.transform = 'translate3d(0,' + (1 - t) * 30 + 'px,0)';
+      x.style.pointerEvents = t > .5 ? 'auto' : 'none';
+    });
+  };
+
+  /* Elementos sueltos */
+  all('main section h2').forEach(function (h) {
+    if (h === clH || h === asTitle) return;
+    var words = split(h, true), n = words.length;
+    track(h, .96, .62, function (p) {
+      words.forEach(function (w, i) {
+        var t = out(seg(p, (i / n) * .45, (i / n) * .45 + .55));
+        w.style.transform = t >= 1 ? '' : 'translate3d(0,' + (1 - t) * 125 + '%,0)';
+      });
+    });
+  });
+  function slide(el, dir, dist) {
+    track(el, .98, .74, function (p) {
+      var e = out(p);
+      el.style.opacity = p >= 1 ? '' : e;
+      el.style.transform = p >= 1 ? '' : 'translate3d(' + dir * (1 - e) * dist + 'px,' + (1 - e) * 24 + 'px,0)';
+    });
+  }
+  all('#juego .head > :not(h2), #temas .head > :not(h2), .lab-row, .hint, .prep h3, .lab-foot > *, .rank h3, .note, .about .copy > :not(h2)').forEach(function (el) { slide(el, 0, 0); });
+  all('.lab details, .prep li, .rank li').forEach(function (el, i) { slide(el, i % 2 ? 1 : -1, 90); });
+  all('.lab .val i').forEach(function (st) {
+    st.style.display = 'inline-block';
+    track(st.closest('details'), .95, .68, function (p) {
+      var e = out(p);
+      st.style.transform = p >= 1 ? '' : 'rotate(' + (1 - e) * 360 + 'deg) scale(' + mix(3, 1, e) + ')';
+    });
+  });
+  var game = q('.game');
+  game.id = 'jugar';
+  track(game, 1, .55, function (p) {
+    var e = out(p);
+    game.style.opacity = p >= 1 ? '' : Math.min(1, e * 1.5);
+    game.style.transform = p >= 1 ? '' : 'translate3d(0,' + (1 - e) * 80 + 'px,0) rotate(' + (1 - e) * -4 + 'deg) scale(' + mix(.78, 1, e) + ')';
+  });
+  all('a[href="#juego"]').forEach(function (a) { a.href = '#jugar'; });
+  var alert_ = q('.alert'), fill = make('span', 'alert-fill');
+  alert_.insertBefore(fill, alert_.firstChild);
+  track(alert_, .92, .62, function (p) {
+    fill.style.transform = 'scaleX(' + inOut(p) + ')';
+    alert_.classList.toggle('lit', p > .45);
+  });
+  var soon = q('.soon');
+  track(soon, 1, .6, function (p) {
+    var e = out(p);
+    soon.style.opacity = p >= 1 ? '' : Math.min(1, e * 1.5);
+    soon.style.transform = p >= 1 ? '' : 'translate3d(0,' + (1 - e) * 70 + 'px,0) rotate(' + (1 - e) * 6 + 'deg) scale(' + mix(.82, 1, e) + ')';
+  });
+
+  /* Medir y dibujar */
+  function measure() {
+    root.style.setProperty('--vw', Math.min(root.clientWidth, screen.width || root.clientWidth, innerWidth) + 'px');
+    var vh = innerHeight, maxY = root.scrollHeight - vh;
+    stages.forEach(function (s) {
+      s.top = docTop(s.box);
+      s.len = Math.max(1, s.box.offsetHeight - s.inner.clientHeight);
+      s.h = s.inner.clientHeight;
+      if (s.onMeasure) s.onMeasure();
+      s.last = -1;
+    });
+    tracks.forEach(function (t) {
+      var top = docTop(t.el);
+      t.start = top - vh * t.from; t.end = top - vh * t.to;
+      if (t.end > maxY) { var d = t.end - maxY; t.start -= d; t.end -= d; }
+      t.last = -1;
+    });
+    heroTrack.last = -1;
+    render();
+  }
+  var ticking = false;
+  function render() {
+    ticking = false;
+    var y = scrollY;
+    var hp = clamp(y / Math.max(1, heroEnd()));
+    if (hp !== heroTrack.last) { heroTrack.last = hp; heroTrack.fn(hp); }
+    stages.forEach(function (s) {
+      var lead = (s.lead || 0) * s.h;
+      var p = clamp((y - (s.top - lead)) / (s.len + lead));
+      if (p === s.last) return;
+      s.last = p; s.fn(p);
+    });
+    tracks.forEach(function (t) {
+      var p = clamp((y - t.start) / Math.max(1, t.end - t.start));
+      if (p === t.last) return;
+      t.last = p; t.fn(p);
+    });
+  }
+  addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(render); }
+  }, { passive: true });
+  var pending, remeasure = function () { clearTimeout(pending); pending = setTimeout(measure, 80); };
+  addEventListener('resize', remeasure);
+  addEventListener('load', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
+  measure();
+})();
 </script>
 </body>
 </html>

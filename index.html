@@ -176,6 +176,19 @@ footer p { max-width: 52em; }
   html { scroll-behavior: auto; }
   .btn, .stamp { transition: none; animation: none; }
 }
+/* Podio del top 3 */
+.rank ol.podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-items: end; margin-top: 20px; overflow: hidden; }
+.rank .podium li { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; gap: 8px; align-items: end; min-width: 0; padding: 0; border: 0; text-align: center; }
+.podium .p-name { display: block; padding: 6px 2px; font: 600 clamp(.8125rem, 3.5vw, .9375rem)/1.25 var(--body); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); overflow-wrap: break-word; hyphens: auto; }
+.podium .p-name:hover { color: var(--red); }
+.podium .p-bar { display: grid; justify-items: center; padding-top: 10px; background: var(--plate); border-top: 4px solid var(--oak); font: 400 clamp(1.75rem, 8vw, 2.5rem)/1.2 var(--display); }
+.podium .p1 { order: 2; }
+.podium .p2 { order: 1; }
+.podium .p3 { order: 3; }
+.podium .p1 .p-bar { height: 160px; background: var(--red); border-color: var(--red); color: var(--red-ink); }
+.podium .p2 .p-bar { height: 112px; }
+.podium .p3 .p-bar { height: 78px; }
+
 /* Escenas ligadas al scroll, pensadas primero para movil. Solo existen con la clase .motion. */
 html.motion { overflow-x: hidden; overflow-anchor: none; }
 .motion body, .motion main, .motion section, .motion .stage { overflow-anchor: none; }
@@ -209,11 +222,12 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
 .fa-wipe span { font-size: 1.125rem; font-weight: 600; }
 
 /* Asterisco */
-.as-in { display: grid; align-content: start; padding-inline: max(16px, env(safe-area-inset-left, 0px)); padding-top: 48px; }
-.as-in .head { margin: 0 auto; width: 100%; max-width: 1120px; }
-.motion section#analitica { position: relative; z-index: 1; padding-top: 0; border-top: 0; }
+.stage-in.as-in { background: transparent; pointer-events: none; }
+.stage:has(> .as-in) { z-index: 2; }
+.motion section#analitica { position: relative; z-index: 1; margin-top: -100vh; margin-top: -100svh; padding-top: 48px; border-top: 0; }
 .as-big { position: absolute; left: 50%; top: 50%; width: 100px; height: 100px; margin: -50px 0 0 -50px; color: var(--red); will-change: transform; z-index: 2; pointer-events: none; }
-.aster { display: inline-block; width: .5em; height: .5em; margin-left: .08em; vertical-align: .55em; visibility: hidden; }
+.aster { display: inline-block; width: .5em; height: .5em; margin-left: .08em; vertical-align: .55em; visibility: hidden; color: var(--red); }
+.aster svg { display: block; }
 
 /* Aviso */
 .motion .alert { position: relative; overflow: hidden; transition: color .15s ease; }
@@ -434,25 +448,29 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
 
     <section id="temas" aria-labelledby="temas-t">
       <div class="head">
-        <p class="label">Datos de Instagram a 8 de noviembre de 2026</p>
+        <p class="label">Según los datos de Instagram</p>
         <h2 id="temas-t">Lo que más os ha servido</h2>
-        <p>Los Reels que la gente ha guardado para usarlos y los que ha mandado a alguien.</p>
+        <p>Los Reels que la gente ha guardado para usarlos y los que ha mandado a alguien. Toca uno para verlo.</p>
       </div>
       <div class="rank">
         <div>
           <h3>Más guardados</h3>
-          <ol>
-            <li><span>Tendinitis</span><span>51</span></li>
-            <li><span>Dormir menos de 5 horas</span><span>26</span></li>
-            <li><span>Empezar a correr</span><span>24</span></li>
+          <ol class="podium">
+            <!-- top:guardados:inicio -->
+            <li class="p1"><a class="p-name" href="https://www.instagram.com/reel/Dcakpibo4n5/">Tendinitis</a><div class="p-bar">1.º</div></li>
+            <li class="p2"><a class="p-name" href="https://www.instagram.com/reel/DalWIpKozjB/">Dormir menos de 5 horas</a><div class="p-bar">2.º</div></li>
+            <li class="p3"><a class="p-name" href="https://www.instagram.com/reel/DdbnokioN4P/">Empezar a correr</a><div class="p-bar">3.º</div></li>
+            <!-- top:guardados:fin -->
           </ol>
         </div>
         <div>
           <h3>Más compartidos</h3>
-          <ol>
-            <li><span>Transaminasas</span><span>26</span></li>
-            <li><span>Ibuprofeno</span><span>23</span></li>
-            <li><span>Entrenar y cerebro</span><span>19</span></li>
+          <ol class="podium">
+            <!-- top:compartidos:inicio -->
+            <li class="p1"><a class="p-name" href="https://www.instagram.com/reel/DaQBOxio5gk/">Transaminasas</a><div class="p-bar">1.º</div></li>
+            <li class="p2"><a class="p-name" href="https://www.instagram.com/reel/De4oDoNowYj/">Ibuprofeno</a><div class="p-bar">2.º</div></li>
+            <li class="p3"><a class="p-name" href="https://www.instagram.com/reel/Dba9woqoXzL/">Entrenar y cerebro</a><div class="p-bar">3.º</div></li>
+            <!-- top:compartidos:fin -->
           </ol>
         </div>
       </div>
@@ -721,33 +739,28 @@ render();
   };
 
   /* Escena 3: asterisco gigante */
-  var as = stage(q('#analitica'), 220, 'as-in', null, null);
-  var asHead = q('#analitica .head');
-  as.inner.appendChild(asHead);
+  var as = stage(q('#analitica'), 210, 'as-in', null, null);
   var svg = '<svg viewBox="-50 -50 100 100" aria-hidden="true" width="100%" height="100%"><g stroke="currentColor" stroke-width="20" stroke-linecap="butt"><line x1="0" y1="-50" x2="0" y2="50"/><line x1="-43.3" y1="-25" x2="43.3" y2="25"/><line x1="-43.3" y1="25" x2="43.3" y2="-25"/></g></svg>';
   var big = make('div', 'as-big', svg);
   as.inner.appendChild(big);
   var asTitle = q('#analitica-t');
   var target = make('span', 'aster');
   target.setAttribute('aria-hidden', 'true');
+  target.innerHTML = svg;
   asTitle.appendChild(target);
   var A = {};
-  var asSection = q('#analitica'), asPull = null;
   as.onMeasure = function () {
     var W = as.inner.clientWidth, H = as.inner.clientHeight;
-    var pull = Math.max(0, H - (asHead.offsetTop + asHead.offsetHeight) - 28);
-    if (pull !== asPull) { asPull = pull; asSection.style.marginTop = -pull + 'px'; }
-    var r = target.getBoundingClientRect(), b = as.inner.getBoundingClientRect();
-    var prev = asHead.style.transform; asHead.style.transform = '';
-    r = target.getBoundingClientRect(); asHead.style.transform = prev;
-    A = { dx: r.left + r.width / 2 - b.left - W / 2, dy: r.top + r.height / 2 - b.top - H / 2, end: r.width / 100, start: Math.max(W, H) * 3 / 100 };
+    var r = target.getBoundingClientRect();
+    A = { W: W, H: H, x: r.left + r.width / 2, y: r.top + scrollY + r.height / 2, end: r.width / 100, start: Math.max(W, H) * 3 / 100 };
   };
   as.fn = function (p) {
-    var e = inOut(seg(p, .02, .62));
-    big.style.transform = 'translate3d(' + A.dx * e + 'px,' + A.dy * e + 'px,0) rotate(' + (1 - e) * 210 + 'deg) scale(' + mix(A.start, A.end, e) + ')';
-    var h = out(seg(p, .42, .72));
-    asHead.style.opacity = h;
-    asHead.style.transform = 'translate3d(0,' + (1 - h) * 50 + 'px,0)';
+    /* El titulo sube con el scroll y el asterisco persigue su posicion real */
+    var e = inOut(seg(p, .02, .96)), landed = p >= .96;
+    var dx = A.x - A.W / 2, dy = A.y - scrollY - A.H / 2;
+    big.style.visibility = landed ? 'hidden' : '';
+    target.style.visibility = landed ? 'visible' : '';
+    big.style.transform = 'translate3d(' + dx * e + 'px,' + dy * e + 'px,0) rotate(' + (1 - e) * 210 + 'deg) scale(' + mix(A.start, A.end, e) + ')';
   };
 
   /* Escena 4: cierre */
@@ -789,7 +802,17 @@ render();
     });
   }
   all('#juego .head > :not(h2), #temas .head > :not(h2), .lab-row, .hint, .prep h3, .lab-foot > *, .rank h3, .note, .about .copy > :not(h2)').forEach(function (el) { slide(el, 0, 0); });
-  all('.lab details, .prep li, .rank li').forEach(function (el, i) { slide(el, i % 2 ? 1 : -1, 90); });
+  all('.lab details, .prep li').forEach(function (el, i) { slide(el, i % 2 ? 1 : -1, 90); });
+  /* El podio sube desde abajo: primero el 3.º, luego el 2.º y al final el 1.º */
+  all('.podium').forEach(function (pod) {
+    var filas = [pod.querySelector('.p3'), pod.querySelector('.p2'), pod.querySelector('.p1')];
+    track(pod, .98, .5, function (p) {
+      filas.forEach(function (li, i) {
+        var a = i * .22, t = out(seg(p, a, a + .56));
+        li.style.transform = t >= 1 ? '' : 'translate3d(0,' + (1 - t) * 102 + '%,0)';
+      });
+    });
+  });
   all('.lab .val i').forEach(function (st) {
     st.style.display = 'inline-block';
     track(st.closest('details'), .95, .68, function (p) {

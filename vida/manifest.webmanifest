@@ -1,0 +1,22 @@
+{
+  "name": "Vida · Miguel Paleteiro",
+  "short_name": "Vida",
+  "description": "Entrenamiento, contenido, estudio y hábitos en un solo sitio. Los datos se guardan solo en este dispositivo.",
+  "lang": "es",
+  "start_url": "./#/hoy",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#E2E5EB",
+  "theme_color": "#E2E5EB",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Entreno de la semana", "url": "./#/entreno/plan" },
+    { "name": "Calendario de contenido", "url": "./#/contenido/calendario" },
+    { "name": "Bloque de estudio", "url": "./#/estudio" }
+  ]
+}

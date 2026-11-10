@@ -25,7 +25,7 @@ V.fdate = s => { if (!V.isDate(s)) return 'sin fecha'; const d = V.date(s); retu
 V.rel = s => { const n = V.diff(s, V.today()); return n === 0 ? 'hoy' : n === 1 ? 'mañana' : n === -1 ? 'ayer' : V.fdate(s); };
 V.inWeek = (s, mon) => V.isDate(s) && s >= mon && s <= V.add(mon, 6);
 
-/* Tiempo: "1:17:56", "34:00" o "45" (minutos) -> segundos */
+/* Tiempo: "1:25:30", "34:00" o "45" (minutos) -> segundos */
 V.sec = str => {
   str = String(str == null ? '' : str).trim().replace(',', '.');
   if (!str) return null;

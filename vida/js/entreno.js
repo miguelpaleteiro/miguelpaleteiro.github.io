@@ -271,7 +271,7 @@ V.runForm = (r, pre) => {
   const p = r.pain || {}, on = V.S.pain.on, lab = esc(V.S.pain.label);
   V.sheet(r.id ? 'Editar carrera' : 'Registrar carrera', '<form data-form="run">' + V.hid('id', r.id) + V.hid('sid', pre.sid) +
     '<div class="grid2">' + V.f('Fecha', 'date', r.date || pre.date || V.today(), { type: 'date', req: 1 }) + V.sel('Tipo', 'kind', kindOpts, r.kind || pre.kind || 'facil') + '</div>' +
-    '<div class="grid2">' + V.f('Kilómetros', 'km', r.km != null ? r.km : pre.km, { mode: 'decimal', req: 1, ph: '6,5' }) + V.f('Tiempo', 'time', r.sec ? V.hms(r.sec) : '', { ph: '41:54 o 1:17:56' }) + '</div>' +
+    '<div class="grid2">' + V.f('Kilómetros', 'km', r.km != null ? r.km : pre.km, { mode: 'decimal', req: 1, ph: '6,5' }) + V.f('Tiempo', 'time', r.sec ? V.hms(r.sec) : '', { ph: '42:10 o 1:25:30' }) + '</div>' +
     '<div class="grid3">' + V.sel('Superficie', 'surface', SURF, r.surface) + V.f('Pulso medio', 'hr', r.hr, { mode: 'numeric' }) + V.f('Esfuerzo 1–10', 'rpe', r.rpe, { mode: 'numeric' }) + '</div>' +
     (on ? V.scale(lab + ' durante (0 nada · 10 máximo)', 'pd', p.d) + V.scale(lab + ' al acabar', 'pa', p.a) + (r.id ? V.scale(lab + ' a las 24 h', 'p24', p.h24) + V.scale(lab + ' a las 48 h', 'p48', p.h48) : '<p class="small muted">Mañana y pasado la app te preguntará cómo sigue.</p>') : '') +
     V.ta('Notas', 'note', r.note, 2, 'Sensaciones, parciales, geles…') + V.submit('Guardar', r.id ? 'runDel' : null, r.id) + '</form>');
@@ -394,7 +394,7 @@ V.form.zones = d => {
 V.act.raceForm = d => {
   const x = (d.id && V.find(V.S.races, d.id)) || {};
   V.sheet(x.id ? 'Editar marca' : 'Nueva marca', '<form data-form="race">' + V.hid('id', x.id) + V.f('Carrera', 'name', x.name, { ph: 'Media Maratón de…' }) +
-    '<div class="grid3">' + V.f('Km', 'km', x.km, { mode: 'decimal', req: 1 }) + V.f('Tiempo', 'time', x.sec ? V.hms(x.sec) : '', { req: 1, ph: '1:17:56' }) + V.f('Fecha', 'date', x.date, { type: 'date' }) + '</div>' +
+    '<div class="grid3">' + V.f('Km', 'km', x.km, { mode: 'decimal', req: 1 }) + V.f('Tiempo', 'time', x.sec ? V.hms(x.sec) : '', { req: 1, ph: '1:25:30' }) + V.f('Fecha', 'date', x.date, { type: 'date' }) + '</div>' +
     V.ta('Notas', 'note', x.note, 2) + '<div class="actions"><button class="btn solid" type="submit">Guardar</button>' + (x.id ? '<button class="btn" type="button" data-act="raceRef" data-id="' + x.id + '">Usar como referencia</button><button class="btn ghost" type="button" data-act="raceDel" data-id="' + x.id + '">Borrar</button>' : '') + '</div></form>');
 };
 V.form.race = d => {

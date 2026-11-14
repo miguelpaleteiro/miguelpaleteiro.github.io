@@ -16,6 +16,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Miguel Paleteiro</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2212%22 fill=%22%23CF2E1C%22/%3E%3Ctext x=%2232%22 y=%2246%22 font-family=%22Arial Black,Arial,sans-serif%22 font-size=%2238%22 font-weight=%22900%22 text-anchor=%22middle%22 fill=%22%23FFFFFF%22%3EM%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#E2E5EB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#252933" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Layout: la pared de su set. Fotos y juego colgados como láminas en marco de roble; titulares como las portadas de sus Reels. */
@@ -184,6 +187,7 @@ footer p { max-width: 52em; }
 .mas-abajo .txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .mas-abajo .flecha { display: inline-block; animation: baja 1.4s ease-in-out infinite; }
 @keyframes baja { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+@media (min-width: 761px) { .mas-abajo { left: auto; right: 24px; transform: none; } .mas-abajo[hidden] { transform: translateY(16px); } }
 @media (prefers-reduced-motion: reduce) { .mas-abajo .flecha { animation: none; } .mas-abajo { transition: none; } }
 /* Podio del top 3 */
 .rank ol.podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-items: end; margin-top: 20px; overflow: hidden; }
@@ -291,7 +295,7 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
           <span class="dot" style="left:84%;top:32%" aria-hidden="true">3</span>
         </div>
         <ol class="legend">
-          <li><b>1</b><span>Lámina del corazón. Estudio 4º de Medicina.</span></li>
+          <li><b>1</b><span>Lámina del corazón. Estudio 4.º de Medicina.</span></li>
           <li><b>2</b><span>Ropa de entrenar. Entrenador personal titulado (TSAF).</span></li>
           <li><b>3</b><span>Lámina de la mano. Si cuento un dato, cuento de dónde sale.</span></li>
         </ol>
@@ -442,7 +446,7 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
       </div>
 
       <div class="lab-foot">
-        <p>¿Hay otro valor de tu analítica que no terminas de entender? <a href="https://www.instagram.com/miguelpaleteiro/">Escríbeme en Instagram</a>, que igual sale video.</p>
+        <p>¿Hay otro valor de tu analítica que no terminas de entender? <a href="https://www.instagram.com/miguelpaleteiro/">Escríbeme en Instagram</a>, que igual sale vídeo.</p>
         <details class="sources">
           <summary>Fuentes</summary>
           <ol>
@@ -495,7 +499,7 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
         <div class="copy">
           <p class="label">Sobre mí</p>
           <h2 id="sobre-t">Del gimnasio a la facultad, y vuelta</h2>
-          <p>Soy entrenador TSAF y estudio 4º de Medicina. En clase me explican cómo funciona el cuerpo y en el gimnasio veo cómo se comporta de verdad. Mis videos juntan las dos cosas.</p>
+          <p>Soy entrenador TSAF y estudio 4.º de Medicina. En clase me explican cómo funciona el cuerpo y en el gimnasio veo cómo se comporta de verdad. Mis vídeos juntan las dos cosas.</p>
           <p>Hago esto para quien ya entrena fuerza o corre y quiere saber el porqué de lo que hace. Grabo en casa, con mis láminas y mi pizarra, y casi siempre termino con una pregunta, porque lo que me contáis en comentarios me da los siguientes temas.</p>
         </div>
         <aside class="soon frame" aria-labelledby="soon-t">
@@ -510,7 +514,7 @@ html.motion { overflow-x: hidden; overflow-anchor: none; }
 
     <section class="closing" aria-labelledby="cierre-t">
       <h2 id="cierre-t">¿Qué te gustaría entender de tu cuerpo?</h2>
-      <p>Cuéntamelo en los comentarios de cualquier Reel. Las mejores preguntas acaban siendo el siguiente video.</p>
+      <p>Cuéntamelo en los comentarios de cualquier Reel. Las mejores preguntas acaban siendo el siguiente vídeo.</p>
       <div class="actions"><a class="btn solid" href="https://www.instagram.com/miguelpaleteiro/">Ir a @miguelpaleteiro</a></div>
     </section>
   </main>
@@ -527,7 +531,7 @@ const ITEMS = [
     w: "El lactato vuelve a niveles normales en unos 30 a 60 minutos. Las agujetas aparecen entre 24 y 72 horas después, así que las fechas no cuadran. Se asocian a microdaño muscular e inflamación, sobre todo al bajar el peso.",
     s: "Schwane et al., 1983, Medicine & Science in Sports & Exercise" },
   { c: "El cruzado se rompe en unos 40 milisegundos", a: "verdad",
-    w: "Al analizar en video roturas reales, la rodilla se va hacia dentro y gira en los primeros 40 ms tras apoyar. Es más rápido que un parpadeo, y por eso frenar y aterrizar con la rodilla alineada se entrena antes.",
+    w: "Al analizar en vídeo roturas reales, la rodilla se va hacia dentro y gira en los primeros 40 ms tras apoyar. Es más rápido que un parpadeo, y por eso frenar y aterrizar con la rodilla alineada se entrena antes.",
     s: "Koga et al., 2010, American Journal of Sports Medicine" },
   { c: "Hacer abdominales quema la grasa de la barriga", a: "mito",
     w: "En un ensayo, seis semanas de abdominales no redujeron la grasa de la zona. Fortalecen el abdomen, pero no eliges de dónde pierdes grasa.",
@@ -543,6 +547,9 @@ const ITEMS = [
     s: "McHugh, 2003, Scandinavian Journal of Medicine & Science in Sports" }
 ];
 const $ = id => document.getElementById(id);
+/* Orden al azar en cada partida: si no, las respuestas se adivinan por el orden */
+function barajar() { for (let k = ITEMS.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [ITEMS[k], ITEMS[j]] = [ITEMS[j], ITEMS[k]]; } }
+barajar();
 let i = 0, hits = 0, done = false;
 const scoreText = () => hits + (hits === 1 ? " acierto" : " aciertos");
 
@@ -590,7 +597,7 @@ function finish() {
 $("btn-mito").addEventListener("click", () => answer("mito"));
 $("btn-verdad").addEventListener("click", () => answer("verdad"));
 $("next").addEventListener("click", () => {
-  if (i >= ITEMS.length) { i = 0; hits = 0; render(); return; }
+  if (i >= ITEMS.length) { barajar(); i = 0; hits = 0; render(); return; }
   if (i === ITEMS.length - 1) { finish(); return; }
   i++; render();
 });
@@ -647,6 +654,7 @@ render();
 
   /* Portada: las lineas se separan al bajar */
   var h1 = q('.hero h1');
+  h1.setAttribute('aria-label', h1.textContent.replace(/\s+/g, ' ').trim());
   var parts = Array.prototype.slice.call(h1.childNodes);
   h1.textContent = '';
   var lines = [];

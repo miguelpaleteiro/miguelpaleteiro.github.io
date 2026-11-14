@@ -176,6 +176,15 @@ footer p { max-width: 52em; }
   html { scroll-behavior: auto; }
   .btn, .stamp { transition: none; animation: none; }
 }
+
+/* Guía de scroll: barra de progreso arriba y botón «Más abajo» */
+.progreso-lectura { position: fixed; top: 0; left: 0; height: 3px; width: 100%; background: var(--red); transform-origin: 0 50%; transform: scaleX(0); z-index: 60; pointer-events: none; }
+.mas-abajo { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translate(-50%, 0); z-index: 40; display: inline-flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 10px 16px; border: 0; border-radius: 999px; background: var(--ink); color: var(--plate); font: 600 .9375rem var(--body); box-shadow: 0 6px 20px rgba(0,0,0,.25); cursor: pointer; transition: opacity .25s, transform .25s; }
+.mas-abajo[hidden] { display: inline-flex; opacity: 0; transform: translate(-50%, 16px); pointer-events: none; }
+.mas-abajo .txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mas-abajo .flecha { display: inline-block; animation: baja 1.4s ease-in-out infinite; }
+@keyframes baja { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+@media (prefers-reduced-motion: reduce) { .mas-abajo .flecha { animation: none; } .mas-abajo { transition: none; } }
 /* Podio del top 3 */
 .rank ol.podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-items: end; margin-top: 20px; overflow: hidden; }
 .rank .podium li { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; gap: 8px; align-items: end; min-width: 0; padding: 0; border: 0; text-align: center; }
@@ -894,6 +903,31 @@ render();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
   if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
   measure();
+})();
+</script>
+<script>
+/* Guía de scroll: dice qué hay más abajo y lo enseña con un toque. Desaparece al final. */
+(() => {
+  const barra = document.createElement('div'); barra.className = 'progreso-lectura'; barra.setAttribute('aria-hidden', 'true');
+  const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'mas-abajo'; btn.hidden = true;
+  btn.innerHTML = '<span class="txt"></span><span class="flecha" aria-hidden="true">↓</span>';
+  document.body.append(barra, btn);
+  const titulos = [...document.querySelectorAll('main h2')];
+  let destino = null, pendiente = false;
+  const corto = (t) => (t.length > 34 ? t.slice(0, 32).trimEnd() + '…' : t);
+  function revisar() {
+    pendiente = false;
+    const alto = document.documentElement.scrollHeight - innerHeight;
+    barra.style.transform = `scaleX(${alto > 0 ? Math.min(1, scrollY / alto) : 1})`;
+    destino = titulos.find((h) => h.getBoundingClientRect().top > innerHeight * 0.8) || null;
+    const alFinal = scrollY >= alto - 60;
+    btn.hidden = !destino || alFinal;
+    if (destino) { btn.querySelector('.txt').textContent = 'Más abajo: ' + corto(destino.textContent.trim()); btn.setAttribute('aria-label', 'Bajar a ' + destino.textContent.trim()); }
+  }
+  const pedir = () => { if (!pendiente) { pendiente = true; setTimeout(revisar, 60); } };
+  addEventListener('scroll', pedir, { passive: true }); addEventListener('resize', pedir);
+  btn.addEventListener('click', () => destino && destino.closest('section, .about, .closing, div')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }));
+  revisar();
 })();
 </script>
 </body>
